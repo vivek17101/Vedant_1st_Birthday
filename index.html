@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1, user-scalable=yes" />
+  <title>Vedant's 1st Birthday Invitation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--pink:#ffb6d5;--deep-pink:#ff8fb3;--accent:#ffd86b;--accent-blue:#a7d8ff;--text-dark:#6b2a4a;--text-main:#c42d78;--card-bg:linear-gradient(180deg,#ffeef6 0%, #ffdff0 100%);}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Poppins', Segoe UI, system-ui, -apple-system, 'Helvetica Neue', Arial;background:linear-gradient(180deg,#f8faff 0%, #f2f8ff 100%);color:#333;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+    .invite-wrap{width:100%;max-width:720px;background:var(--card-bg);border-radius:20px;box-shadow:0 10px 30px rgba(16,24,40,0.12);overflow:hidden;position:relative;animation:fadeIn 1s ease-out}
+    @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+    /* Header artwork */
+    .hero{padding:24px;display:flex;gap:18px;align-items:flex-start}
+    .art{flex:0 0 170px;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#ffeaf4,#fff6f9);box-shadow:0 4px 12px rgba(0,0,0,0.08), 0 0 10px var(--accent-blue);cursor:pointer;position:relative}
+    .art img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease}
+    .art:hover img{transform:scale(1.05)}
+    .art::after{content:'Click to see more';position:absolute;bottom:0;left:0;width:100%;background:rgba(0,0,0,0.4);color:white;text-align:center;font-size:12px;padding:4px;opacity:0;transition:opacity 0.3s ease}
+    .art:hover::after{opacity:1}
+
+    .hero-content{flex:1}
+    h1{margin:0 0 4px;font-family:'Playpen Sans', cursive;font-size:32px;color:var(--text-main);animation:fadeInDown 0.5s ease-out}
+    .subtitle{margin:0 0 12px;color:var(--text-dark);font-size:18px;animation:fadeInUp 0.5s 0.2s ease-out backwards}
+
+    /* Countdown */
+    #countdown{display:flex;gap:10px;margin:16px 0;justify-content:center;background:rgba(255,255,255,0.7);padding:10px;border-radius:10px}
+    .time-unit{text-align:center;width:60px;transition:transform 0.3s ease}
+    .time-unit.bounce{transform:scale(1.1)}
+    .time-unit div:first-child{font-size:24px;font-weight:700;color:var(--text-main)}
+    .time-unit div:last-child{font-size:11px;text-transform:uppercase;color:var(--text-dark)}
+
+    /* details */
+    .details{background:rgba(255,255,255,0.7);margin:0 24px 24px;padding:16px;border-radius:12px;line-height:1.5}
+    .row{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+    .label{width:90px;font-weight:600;color:#9c3e6a}
+    .value{flex:1}
+
+    .map-preview{margin-top:12px;height:200px;border-radius:8px;overflow:hidden}
+
+    .actions{display:flex;gap:12px;padding:0 24px 24px}
+    .btn{background:var(--deep-pink);color:white;padding:10px 16px;border-radius:10px;border:none;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.08);text-decoration:none;font-size:14px;display:inline-block;transition:background-color 0.2s, transform 0.2s}
+    .btn:hover{background:#ff74a3;transform:scale(1.05)}
+    .btn.secondary{background:transparent;color:#c23d7a;border:2px solid rgba(194,61,122,0.14)}
+    .btn.secondary:hover{background:rgba(194,61,122,0.05);transform:scale(1.05)}
+
+    /* General animation and confetti */
+    #confetti{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
+    @keyframes fadeInDown{from{opacity:0;transform:translateY(-15px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}
+
+    footer{padding:16px;text-align:center;color:#7b4b6a;font-size:13px;background:rgba(255,255,255,0.5)}
+    @media (max-width:520px){h1{font-size:26px}.art{flex-basis:120px}.hero{flex-direction:column}.actions{justify-content:center;flex-direction:column}.countdown{flex-direction:column;gap:5px}}
+  </style>
+</head>
+<body>
+  <div class="invite-wrap" id="invite">
+    <canvas id="confetti"></canvas>
+    
+    <div class="hero">
+      <div class="art" id="photoGallery" tabindex="0" aria-label="Cycle through Vedant's photos">
+        <img id="coverImg" src="dholak.jpeg" alt="Vedant playing dholak">
+      </div>
+      <div class="hero-content">
+        <h1 id="childName">Vedant's 1st Birthday</h1>
+        <p class="subtitle" id="tagline">Our little star is turning one!</p>
+        
+        <div id="countdown"></div>
+        
+        <div class="actions">
+          <a class="btn" id="calendarBtn" href="#" title="Add to your Calendar" aria-label="Add event to calendar">Add to Calendar</a>
+          <a class="btn secondary" id="mapBtn" href="https://maps.app.goo.gl/XKVBK1zXyMLgTwst6" target="_blank" rel="noopener" aria-label="Open location in Google Maps">Open Location</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="details">
+      <div class="row"><div class="label">🗓️ When</div><div class="value" id="when">9 September 2025, 7:00 PM</div></div>
+      <div class="row"><div class="label">📍 Where</div><div class="value" id="where">Saraswati Palace, 16/2, Rajajipuram, Lucknow</div></div>
+      <div class="map-preview">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3559.9999999999995!2d80.912345!3d26.83928!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDUwJzIxLjQiTiA4MMKwNTQnNDQuNCJF!5e0!3m2!1sen!2sus!4v1690000000000!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div class="row"><div class="label">❤️ Hosts</div><div class="value" id="hosts">Proud Parents: Saurabh and Kiran, and Loving Family</div></div>
+    </div>
+
+    <footer>Bring your smiles and join the fun—Vedant can't wait to see you! We look forward to celebrating this joyous occasion with you!</footer>
+  </div>
+
+  <script>
+    // --- Configuration ---
+    const eventDate = new Date('2025-09-09T19:00:00');
+    const photoGalleryImages = [
+      {src: 'dholak1.jpeg', alt: 'Vedant smiling with family'}, // Baby photo
+      {src: 'dholak2.jpeg', alt: 'Mickey & Friends themed card'}, // Mickey & Friends card
+      {src: 'dholak3.jpeg', alt: 'Candy cart setup'}  // Candy cart card
+    ];
+    let currentPhotoIndex = 0;
+
+    // --- Countdown Timer ---
+    const countdownEl = document.getElementById('countdown');
+    function updateCountdown() {
+      const now = new Date();
+      const diff = eventDate - now;
+      if (diff <= 0) {
+        countdownEl.innerHTML = "<p>Thanks for celebrating with us! 🎉</p>";
+        return;
+      }
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      countdownEl.innerHTML = `
+        <div class="time-unit"><div>${days}</div><div>Days</div></div>
+        <div class="time-unit"><div>${hours}</div><div>Hours</div></div>
+        <div class="time-unit"><div>${minutes}</div><div>Mins</div></div>
+        <div class="time-unit"><div>${seconds}</div><div>Secs</div></div>
+      `;
+      // Bounce animation
+      const units = countdownEl.querySelectorAll('.time-unit');
+      units.forEach(unit => unit.classList.add('bounce'));
+      setTimeout(() => units.forEach(unit => unit.classList.remove('bounce')), 300);
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // --- Photo Gallery ---
+    const photoGallery = document.getElementById('photoGallery');
+    const coverImg = document.getElementById('coverImg');
+    function changePhoto() {
+      currentPhotoIndex = (currentPhotoIndex + 1) % photoGalleryImages.length;
+      const photo = photoGalleryImages[currentPhotoIndex];
+      coverImg.src = photo.src;
+      coverImg.alt = photo.alt;
+    }
+    photoGallery.addEventListener('click', changePhoto);
+    photoGallery.addEventListener('keydown', (e) => { if (e.key === 'Enter') changePhoto(); });
+
+    // --- 'Add to Calendar' Button ---
+    document.getElementById('calendarBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      // Google Calendar link (example; customize as needed)
+      const gCalLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Vedant's+1st+Birthday+Party&dates=${eventDate.toISOString().replace(/-|:|\.\d+/g, '')}/${new Date(eventDate.getTime() + 3*60*60*1000).toISOString().replace(/-|:|\.\d+/g, '')}&details=Join+us+to+celebrate+Vedant's+first+birthday!+Dress+code:+Festive&location=Saraswati+Palace,+16/2,+Rajajipuram,+Lucknow`;
+      if (confirm('Add to Google Calendar? Click OK for Google, Cancel for ICS download.')) {
+        window.open(gCalLink, '_blank');
+      } else {
+        const eventEnd = new Date(eventDate.getTime() + (3 * 60 * 60 * 1000)); // Assume 3-hour event
+        const formatDT = (date) => date.toISOString().replace(/-|:|\.\d+/g, '');
+        const ics = `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+URL:${document.location.href}
+DTSTART:${formatDT(eventDate)}
+DTEND:${formatDT(eventEnd)}
+SUMMARY:Vedant's 1st Birthday Party
+DESCRIPTION:Join us to celebrate Vedant's first birthday! Dress code: Festive. No gifts necessary, just your presence!
+LOCATION:Saraswati Palace, 16/2, Rajajipuram, Lucknow
+END:VEVENT
+END:VCALENDAR`;
+        const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'Vedant_Birthday.ics';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    });
+
+    // --- Confetti Animation (updated to stars) ---
+    const canvas = document.getElementById('confetti');
+    const ctx = canvas.getContext('2d');
+    const invite = document.getElementById('invite');
+    function resize(){ canvas.width = invite.clientWidth; canvas.height = invite.clientHeight; }
+    window.addEventListener('resize', resize); resize();
+    const pieces = [];
+    const rand = (min,max) => Math.random()*(max-min)+min;
+    for(let i=0;i<80;i++){pieces.push({x:rand(0,canvas.width),y:rand(0,canvas.height),r:rand(4,9),d:rand(1,3),c:['#ffd86b','#ffb6d5','#ffd2ea','#a7d8ff'][Math.floor(Math.random()*4)],t:Math.random()*Math.PI*2})}
+    function drawStar(x, y, r, c) {
+      ctx.fillStyle = c;
+      ctx.beginPath();
+      for (let i = 0; i < 5; i++) {
+        ctx.lineTo(x + r * Math.cos((Math.PI * 2 / 5) * i - Math.PI / 2), y + r * Math.sin((Math.PI * 2 / 5) * i - Math.PI / 2));
+        ctx.lineTo(x + r / 2 * Math.cos((Math.PI * 2 / 5) * i), y + r / 2 * Math.sin((Math.PI * 2 / 5) * i));
+      }
+      ctx.closePath();
+      ctx.fill();
+    }
+    function render(){ctx.clearRect(0,0,canvas.width,canvas.height);for(const p of pieces){p.y+=p.d;p.t+=0.03;ctx.save();ctx.translate(p.x+Math.sin(p.t)*6,p.y);ctx.rotate(p.t);drawStar(0, 0, p.r, p.c);ctx.restore();if(p.y>canvas.height+20){p.y=-10;p.x=rand(0,canvas.width)}}requestAnimationFrame(render)}
+    render();
+  </script>
+</body>
+</html>
